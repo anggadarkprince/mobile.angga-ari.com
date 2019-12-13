@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {SafeAreaView} from 'react-navigation';
 import {
+    Button,
     Card,
-    CardHeader,
-    Divider,
     Icon,
     Layout,
     Spinner,
@@ -40,7 +39,7 @@ export default class PortfolioScreen extends Component {
                              onPress={() => this.props.navigation.goBack()}/>
     );
 
-    buildList({item}) {
+    buildList({item, index}) {
         const header = () => (
             <React.Fragment>
                 {item.medias.length ?
@@ -50,36 +49,40 @@ export default class PortfolioScreen extends Component {
                     />
                     : null
                 }
-                <Text style={{marginHorizontal: 20, marginVertical: 16}} category='h6'
+                <Text style={{marginHorizontal: 25, marginVertical: 14, fontFamily: 'Roboto-Bold'}} category='h6'
                       status='warning'>{item.title}</Text>
             </React.Fragment>
         );
         return (
-            <Card header={header} style={{marginBottom: 15, alignSelf: 'stretch'}}>
-                {item.description && <Text>{item.description}</Text>}
-                {item.organization && <Text>{item.organization}</Text>}
-                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', opacity: 0.5}}>
-                    <Text style={{fontSize: 12}}>{item.category} - {item.platform}</Text>
-                    <Text style={{fontSize: 12}}>
-                        {(new Date(item.start_date)).getFullYear()} - {item.end_date ? (new Date(item.end_date)).getFullYear() : 'Now'}
-                    </Text>
-                </View>
-            </Card>
+            <View>
+                <Card header={header} style={{marginBottom: 15, alignSelf: 'stretch', borderRadius: 8, elevation: 25}}>
+                    <View style={{marginBottom: 10}}>
+                        {item.description && <Text style={{fontFamily: 'Roboto-Medium'}}>{item.description}</Text>}
+                        {item.organization && <Text style={{fontSize: 14, color: '#8f9bb3'}}>{item.organization}</Text>}
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5, opacity: 0.5}}>
+                        <Text style={{fontSize: 12}}>{item.category} - {item.platform}</Text>
+                        <Text style={{fontSize: 12}}>
+                            {(new Date(item.start_date)).getFullYear()} - {item.end_date ? (new Date(item.end_date)).getFullYear() : 'Now'}
+                        </Text>
+                    </View>
+                </Card>
+                {index === this.state.portfolios.length - 1 && <Button appearance='ghost' status='primary' icon={(style) => <Icon name='arrow-back-outline' {...style} />} onPress={() => this.props.navigation.navigate('Home')} style={{marginVertical: 15}}>BACK TO HOME</Button>}
+            </View>
         )
     }
 
     render() {
         return (
             <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>
-                <TopNavigation title={this.props.navigation.getParam('title')} alignment='center'
+                <TopNavigation title={this.props.navigation.getParam('title')} titleStyle={{fontFamily: 'Roboto-Medium'}} alignment='center' style={{elevation: 30}}
                                leftControl={this.backAction()}/>
-                <Divider/>
                 <Layout style={{flex: 1, justifyContent: 'center'}}>
                     {
                         this.state.portfolios ?
                             <FlatList contentContainerStyle={{padding: 20}}
                                       data={this.state.portfolios}
-                                      renderItem={this.buildList}
+                                      renderItem={this.buildList.bind(this)}
                                       keyExtractor={item => item.id.toString()}
                                       refreshControl={
                                           <RefreshControl refreshing={this.state.isLoading}

@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import { SafeAreaView } from 'react-navigation';
 import {
+    Button,
     Card,
-    CardHeader,
-    Divider,
     Icon,
     Layout,
     Spinner,
@@ -39,40 +38,43 @@ export default class ExperienceScreen extends Component {
         <TopNavigationAction icon={(style) => <Icon {...style} name='arrow-back' />} onPress={() => this.props.navigation.goBack()}/>
     );
 
-    buildList({item}) {
+    buildList({item, index}) {
         const header = () => (
-            <CardHeader
-                title={item.title}
-                titleStyle={{fontFamily: 'Roboto-Bold'}}
-                style={{description: {opacity: 0.5}}}
-            />
+            <View style={{marginHorizontal: 25, marginVertical: 14}}>
+                <Text style={{fontFamily: 'Roboto-Bold'}} category='h6'>
+                    {item.title}
+                </Text>
+                <Text style={{fontSize: 14}} status='warning'>
+                    {item.company}
+                </Text>
+            </View>
         );
         return (
-            <Card header={header} style={{marginBottom: 15, alignSelf: 'stretch'}}>
-                {item.company && <Text style={{fontFamily: 'Roboto-Medium'}} status='warning'>{item.company}</Text>}
-                {item.description && <Text style={{fontSize: 14, opacity: 0.5}}>{item.description}</Text>}
-                <Divider style={{marginVertical: 12}}/>
-                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <Text style={{fontSize: 12}}>{item.location}</Text>
-                    <Text style={{fontSize: 12}}>
-                        {(new Date(item.start_date)).getFullYear()} - {item.until_date ? (new Date(item.until_date)).getFullYear() : 'Now'}
-                    </Text>
-                </View>
-            </Card>
+            <View>
+                <Card header={header} style={{marginBottom: 15, alignSelf: 'stretch', borderRadius: 8, elevation: 25}}>
+                    {item.description && <Text style={{fontSize: 14, marginBottom: 10}}>{item.description}</Text>}
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5, opacity: 0.5}}>
+                        <Text style={{fontSize: 12}}>{item.location}</Text>
+                        <Text style={{fontSize: 12}}>
+                            {(new Date(item.start_date)).getFullYear()} - {item.until_date ? (new Date(item.until_date)).getFullYear() : 'Now'}
+                        </Text>
+                    </View>
+                </Card>
+                {index === this.state.experiences.length - 1 && <Button onPress={() => this.props.navigation.navigate('Portfolio')} style={{marginVertical: 15}}>SHOW MORE</Button>}
+            </View>
         )
     }
 
     render() {
         return (
             <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>
-                <TopNavigation title={this.props.navigation.getParam('title')} alignment='center' leftControl={this.backAction()}/>
-                <Divider/>
+                <TopNavigation title={this.props.navigation.getParam('title')} titleStyle={{fontFamily: 'Roboto-Medium'}} alignment='center' style={{elevation: 30}} leftControl={this.backAction()}/>
                 <Layout style={{flex: 1, justifyContent: 'center'}}>
                     {
                         this.state.experiences ?
                             <FlatList contentContainerStyle={{padding: 20}}
                                       data={this.state.experiences}
-                                      renderItem={this.buildList}
+                                      renderItem={this.buildList.bind(this)}
                                       keyExtractor={item => item.id.toString()}
                                       refreshControl={
                                           <RefreshControl refreshing={this.state.isLoading} onRefresh={() => this.fetchData()} />

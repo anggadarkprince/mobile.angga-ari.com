@@ -43,11 +43,11 @@ const tabOptions = {
 
         return (
             <SafeAreaView>
-                <Divider/>
+                <Divider style={{borderColor: 'transparent', elevation: 50}}/>
                 <BottomNavigation selectedIndex={navigation.state.index} onSelect={onSelect}>
                     <BottomNavigationTab icon={(style) => <Icon {...style} name='home-outline'/>}/>
                     <BottomNavigationTab icon={(style) => <Icon {...style} name='book-outline'/>}/>
-                    <BottomNavigationTab icon={(style) => <Icon {...style} name='pantone-outline'/>}/>
+                    <BottomNavigationTab icon={(style) => <Icon {...style} name='flash-outline'/>}/>
                     <BottomNavigationTab icon={(style) => <Icon {...style} name='briefcase-outline'/>}/>
                     <BottomNavigationTab icon={(style) => <Icon {...style} name='browser-outline'/>}/>
                 </BottomNavigation>
