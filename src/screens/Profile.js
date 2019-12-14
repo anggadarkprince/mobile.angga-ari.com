@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import { SafeAreaView } from 'react-navigation';
 import {Button, Card, Divider, Icon, Layout, Spinner, Text, TopNavigation} from '@ui-kitten/components';
 import {ThemeContext} from '../../theme-context';
-import {ScrollView, Image, RefreshControl, StatusBar, View} from "react-native";
+import {ScrollView, Image, RefreshControl, StatusBar, View, TouchableOpacity, Linking} from "react-native";
+import ProfileItem from "../componenets/ProfileItem";
+import ProfileSocial from "../componenets/ProfileSocial";
+import SimpleLink from "../componenets/SimpleLink";
 
 export class HomeScreen extends Component {
     state = {
@@ -32,42 +35,44 @@ export class HomeScreen extends Component {
         return (
             <View style={{flex: 1}}>
                 <View style={{padding: 20}}>
-                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                         <Image
-                            style={{width: 75, height: 75, borderRadius: 75/2, marginRight: 10}} resizeMode='cover'
+                            style={{width: 80, height: 80, borderRadius: 80/2, marginRight: 10}} resizeMode='cover'
                             source={{uri: this.state.user.avatar}}
                         />
                         <View>
                             <Text category='h5' style={{fontFamily: 'Roboto-Bold'}}>{profile.first_name} {profile.last_name}</Text>
-                            <Text style={{color: '#8f9bb3'}}>{profile.nationality}</Text>
+                            <Text appearance={'hint'} style={{fontFamily: 'Roboto-Medium'}}>{profile.nationality}</Text>
+                            <SimpleLink url={profile.websites[0]?.url} style={{lineHeight: 16, marginBottom: 15, fontSize: 14}} status={'warning'}/>
                         </View>
                     </View>
-                    <Text style={{marginBottom: 10, color: '#8f9bb3', textAlign: 'center'}}>{profile.professional_profile}</Text>
+
+                    <Divider style={{marginVertical: 15}}/>
+                    {
+                        profile.socials.length && (
+                            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                                {profile.socials.map((social) => <ProfileSocial type={social.social} url={social.url} />)}
+                            </View>
+                        )
+                    }
+                    <Divider style={{marginVertical: 15}}/>
+
+                    <Text style={{marginBottom: 10, textAlign: 'center'}} appearance={'hint'}>{profile.professional_profile}</Text>
+
+                    <Divider style={{marginVertical: 15}}/>
                     <Button onPress={() => this.props.navigation.navigate('Education')}>SHOW MORE</Button>
-                    <Button style={{marginVertical: 4}} onPress={this.props.themeContext.toggleTheme}>TOGGLE THEME</Button>
+                    {/*<Button style={{marginVertical: 4}} onPress={this.props.themeContext.toggleTheme} type={'warning'}>TOGGLE THEME</Button>*/}
+
                 </View>
-                <View style={{padding: 20, backgroundColor: '#f6f6f6'}}>
-                    <Card style={{marginBottom: 15, alignSelf: 'stretch', borderRadius: 8, borderColor: 'transparent', elevation: 25}}>
-                        <Text style={{fontSize: 12, color: '#8f9bb3'}}>EMAIL</Text>
-                        <Text style={{fontSize: 16, fontFamily: 'Roboto-Bold'}}>
-                            {user.email}
-                        </Text>
-                    </Card>
+                <Layout style={{padding: 20}} level={'3'}>
+                    <ProfileItem title={'EMAIL'} value={user.email}/>
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <Card style={{flex: 1, flexBasis: 1, marginBottom: 15, marginRight: 10, alignSelf: 'stretch', borderRadius: 8, borderColor: 'transparent', elevation: 25}}>
-                            <Text style={{fontSize: 12, color: '#8f9bb3'}}>GENDER</Text>
-                            <Text style={{fontSize: 16, fontFamily: 'Roboto-Bold'}}>
-                                {profile.gender.toUpperCase()}
-                            </Text>
-                        </Card>
-                        <Card style={{flex: 1, flexBasis: 1, marginBottom: 15, marginLeft: 10, alignSelf: 'stretch', borderRadius: 8, borderColor: 'transparent', elevation: 25}}>
-                            <Text style={{fontSize: 12, color: '#8f9bb3'}}>DATE OF BIRTH</Text>
-                            <Text style={{fontSize: 16, fontFamily: 'Roboto-Bold'}}>
-                                {profile.date_of_birth}
-                            </Text>
-                        </Card>
+                        <ProfileItem title={'EMAIL'} value={profile.gender.toUpperCase()} style={{marginRight: 10, flexBasis: 1}}/>
+                        <ProfileItem title={'DATE OF BIRTH'} value={profile.date_of_birth} style={{marginLeft: 10, flexBasis: 1}}/>
                     </View>
-                </View>
+                    <ProfileItem title={'ADDRESS'} value={profile.address}/>
+                    <ProfileItem title={'CONTACT'} value={'+'+profile.phones[0]?.prefix + profile.phones[0]?.number}/>
+                </Layout>
             </View>
         )
     }
@@ -75,6 +80,7 @@ export class HomeScreen extends Component {
     render() {
         return (
             <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>
+                <TopNavigation title={this.props.navigation.getParam('title')} titleStyle={{fontFamily: 'Roboto-Medium'}} alignment='center' style={{elevation: 30}}/>
                 <Layout style={{flex: 1, justifyContent: 'center'}}>
                     {
                         this.state.user ?

@@ -44,7 +44,7 @@ export default class ExperienceScreen extends Component {
                 <Text style={{fontFamily: 'Roboto-Bold'}} category='h6'>
                     {item.title}
                 </Text>
-                <Text style={{fontSize: 14}} status='warning'>
+                <Text style={{fontSize: 14, fontFamily: 'Roboto-Medium'}} status='warning'>
                     {item.company}
                 </Text>
             </View>
