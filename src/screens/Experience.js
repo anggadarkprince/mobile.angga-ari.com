@@ -51,7 +51,7 @@ export default class ExperienceScreen extends Component {
         );
         return (
             <View>
-                <Card header={header} style={{marginBottom: 15, alignSelf: 'stretch', borderRadius: 8, elevation: 25}}>
+                <Card header={header} style={{marginBottom: 15, alignSelf: 'stretch', borderRadius: 8, borderColor: 'transparent', elevation: 25}}>
                     {item.description && <Text style={{fontSize: 14, marginBottom: 10}}>{item.description}</Text>}
                     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5, opacity: 0.5}}>
                         <Text style={{fontSize: 12}}>{item.location}</Text>
@@ -67,8 +67,8 @@ export default class ExperienceScreen extends Component {
 
     render() {
         return (
-            <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>
-                <TopNavigation title={this.props.navigation.getParam('title')} titleStyle={{fontFamily: 'Roboto-Medium'}} alignment='center' style={{elevation: 30}} leftControl={this.backAction()}/>
+            <SafeAreaView style={{flex: 1}}>
+                <TopNavigation title={this.props.navigation.getParam('title')} titleStyle={{fontFamily: 'Roboto-Medium'}} alignment='center' style={{elevation: 30, marginTop: StatusBar.currentHeight}} leftControl={this.backAction()}/>
                 <Layout style={{flex: 1, justifyContent: 'center'}}>
                     {
                         this.state.experiences ?

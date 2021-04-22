@@ -12,7 +12,7 @@ import {
     TopNavigation,
     TopNavigationAction
 } from '@ui-kitten/components';
-import {FlatList, StatusBar, View, RefreshControl} from "react-native";
+import {FlatList, StatusBar, View, RefreshControl, Image} from "react-native";
 
 export default class SkillScreen extends Component {
     state = {
@@ -55,13 +55,17 @@ export default class SkillScreen extends Component {
                                 stars.push(<Icon key={'level-' + skill.id + i} name='star' width={16} height={16} fill={i <= skill.level ? '#fa0' : '#ddd'} />);
                             }
                             return (
-                                <Card key={skill.id} style={{marginBottom: 15, alignSelf: 'stretch', borderRadius: 8, elevation: 25}}>
-                                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                                <Card key={skill.id} style={{marginBottom: 15, alignSelf: 'stretch', borderRadius: 8, borderColor: 'transparent', elevation: 25}}>
+                                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                                        <Image
+                                            style={{width: 50, height: 50, borderRadius: 25, marginRight: 20}} resizeMode='cover'
+                                            source={{uri: skill.icon}}
+                                        />
                                         <View style={{flex: 1}}>
                                             <Text style={{fontFamily: 'Roboto-Bold'}}>{skill.expertise}</Text>
                                             <Text style={{fontSize: 12, lineHeight: 16, color: '#8f9bb3'}}>{skill.description}</Text>
+                                            <View style={{flex: 1, flexDirection: 'row', marginTop: 5}}>{stars.map(star => star)}</View>
                                         </View>
-                                        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end', marginTop: 5}}>{stars.map(star => star)}</View>
                                     </View>
                                 </Card>
                             )
@@ -76,8 +80,8 @@ export default class SkillScreen extends Component {
     render() {
 
         return (
-            <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>
-                <TopNavigation title={this.props.navigation.getParam('title')} titleStyle={{fontFamily: 'Roboto-Medium'}} alignment='center' style={{elevation: 30}}
+            <SafeAreaView style={{flex: 1}}>
+                <TopNavigation title={this.props.navigation.getParam('title')} titleStyle={{fontFamily: 'Roboto-Medium'}} alignment='center' style={{elevation: 30, marginTop: StatusBar.currentHeight}}
                                leftControl={this.backAction()}/>
                 <Layout style={{flex: 1, justifyContent: 'center'}}>
                     {

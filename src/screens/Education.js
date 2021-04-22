@@ -70,8 +70,8 @@ export default class EducationScreen extends Component {
     render() {
 
         return (
-            <SafeAreaView style={{flex: 1, marginTop: StatusBar.currentHeight}}>
-                <TopNavigation title={this.props.navigation.getParam('title')} titleStyle={{fontFamily: 'Roboto-Medium'}} alignment='center' style={{elevation: 30}}
+            <SafeAreaView style={{flex: 1}}>
+                <TopNavigation title={this.props.navigation.getParam('title')} titleStyle={{fontFamily: 'Roboto-Medium'}} alignment='center' style={{elevation: 30, marginTop: StatusBar.currentHeight}}
                                leftControl={this.backAction()}/>
                 <Layout style={{flex: 1, justifyContent: 'center'}}>
                     {
